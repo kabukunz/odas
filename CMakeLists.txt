@@ -1,4 +1,7 @@
-project(odas)
+
+project(odas C CXX)
+
+set(CMAKE_CXX_STANDARD 17)
 
 cmake_minimum_required(VERSION 2.8)
 
@@ -40,7 +43,8 @@ endif()
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
-    set (CMAKE_CXX_FLAGS "-Ofast -std=c++17 -I/usr/include/jsoncpp ${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    # set (CMAKE_CXX_FLAGS "-Ofast -std=c++17 -I/usr/include/jsoncpp ${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
 # PCL
@@ -85,12 +89,18 @@ include_directories(odas "${CMAKE_SOURCE_DIR}/../nsga2-cpp/build/install/include
 # what's this linux lib?
 # SET(NEWUOA_LIBRARIES "/usr/local/lib/libnewuoa.so")
 
-aux_source_directory(. SRC_LIST)
-add_executable(${PROJECT_NAME} ${SRC_LIST} )
+set(SRC_LIST test_odas_new.cpp)
+
+# aux_source_directory(. SRC_LIST)
+
+add_executable(${PROJECT_NAME} ${SRC_LIST})
+
+# set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+
 target_link_libraries (${PROJECT_NAME} ${PCL_LIBRARIES})
 target_link_libraries (${PROJECT_NAME} ${CMAES_LIBRARIES})
-target_link_libraries (${PROJECT_NAME} ${NLOPT_LIBRARIES})
-target_link_libraries (${PROJECT_NAME} ${POPOT_LIBRARIES})
-target_link_libraries (${PROJECT_NAME} ${NSGA2})
+# target_link_libraries (${PROJECT_NAME} ${NLOPT_LIBRARIES})
+# target_link_libraries (${PROJECT_NAME} ${POPOT_LIBRARIES})
+# target_link_libraries (${PROJECT_NAME} ${NSGA2})
 # target_link_libraries (${PROJECT_NAME} ${NEWUOA_LIBRARIES})
 

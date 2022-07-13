@@ -1,0 +1,51 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/odas/**",
+                "${workspaceFolder}/external/**",
+                "${workspaceFolder}/prebuilt/include/**",
+                "${workspaceFolder}/../pcl/build/install/include/pcl-1.12/**"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "defines": [],
+            "macFrameworkPath": ["/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks"],            
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "macos-clang-x64",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"            
+        },
+        {
+            "name": "WINDOWS",
+            "includePath": [
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/dep/**",
+                "${workspaceFolder}/prebuilt/include/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.25.28610/bin/Hostx64/x64/cl.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "msvc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "compileCommands": "${workspaceFolder}/build/290-390/clang-cl/Release/compile_commands.json"
+        }
+    ],
+    "version": 4
+}

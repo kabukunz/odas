@@ -5,6 +5,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 cmake_minimum_required(VERSION 2.8)
 
+# trapper
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+file(DOWNLOAD https://raw.githubusercontent.com/kabukunz/trapper/main/Trapper.cmake "${CMAKE_MODULE_PATH}/Trapper.cmake")
+
+include(Trapper)
+
 # eigen
 find_package(Eigen3)
 
@@ -48,7 +55,20 @@ if (OPENMP_FOUND)
 endif()
 
 # PCL
-find_package(PCL CONFIG 1.2 REQUIRED PATHS ${CMAKE_SOURCE_DIR}/../pcl/build/install/share/pcl-1.12)
+# find_package(PCL CONFIG 1.2 REQUIRED PATHS ${CMAKE_SOURCE_DIR}/../pcl/build/install/share/pcl-1.12)
+
+# https://github.com/PointCloudLibrary/pcl/releases/tag/pcl-1.2
+
+trapper_add_package(pcl
+    https://github.com/PointCloudLibrary/pcl.git
+    pcl-1.2
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/external"
+    VERBOSE
+    )
+
+find_package(PCL CONFIG 1.2 REQUIRED PATHS "${TRAPPER_INSTALL_DIR}/share/pcl-1.2")
+# add_subdirectory("${TRAPPER_SOURCE_DIR}")
+
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})

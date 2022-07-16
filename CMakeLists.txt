@@ -66,6 +66,9 @@ trapper_add_package(pcl
     VERBOSE
     )
 
+# patch pcl 1.2
+configure_file("${CMAKE_SOURCE_DIR}/patch/CMakeLists.txt" "${TRAPPER_SOURCE_DIR}/CMakeLists.txt" COPYONLY)  
+
 find_package(PCL CONFIG 1.2 REQUIRED PATHS "${TRAPPER_INSTALL_DIR}/share/pcl-1.2")
 # add_subdirectory("${TRAPPER_SOURCE_DIR}")
 

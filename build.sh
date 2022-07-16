@@ -3,7 +3,7 @@
 export CMAKE_SOURCE_DIR=.
 export CMAKE_BUILD_DIR=build
 export CMAKE_BUILD_TYPE=Release
-export CMAKE_INSTALL_PREFIX=/usr/local
+# export CMAKE_INSTALL_PREFIX=/usr/local
 
 rm -rf "${CMAKE_BUILD_DIR}/CMakeCache.txt"
 
@@ -15,4 +15,4 @@ cmake \
 -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
 -G Ninja
 
-cmake --build build
+# cmake --build build

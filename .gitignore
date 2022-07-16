@@ -1,0 +1,12 @@
+Trapper.cmake
+
+.cache
+bin
+build
+prebuilt
+external
+
+*.zip
+*.tar.gz
+*.tar
+*.exe

@@ -11,6 +11,11 @@ string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
 
+# set(PCL_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+
+# OpenMP
+include(${PCL_SOURCE_DIR}/cmake/pcl_openmp.cmake)
+
 # ---[ Release/Debug specific flags
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
   add_definitions("-DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG")
@@ -110,22 +115,46 @@ include_directories(${FLANN_INCLUDE_DIRS})
 # CMinpack
 find_package(CMinpack REQUIRED)
 include_directories(${CMINPACK_INCLUDE_DIRS})
-# OpenMP
-include(${PCL_SOURCE_DIR}/cmake/pcl_openmp.cmake)
+
+# OPEN MP
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    message("-- Setting OpenMP flags on MacOs. Assuming `brew install libomp`")
+    if(CMAKE_C_COMPILER_ID MATCHES "Clang")
+        set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" CACHE INTERNAL "OpenMP flags for Xcode toolchain.")
+        set(OpenMP_C_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+        set(OpenMP_omp_LIBRARY "/usr/local/opt/libomp/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+    endif()
+
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" CACHE INTERNAL "OpenMP flags for Xcode toolchain.")
+        set(OpenMP_CXX_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+        set(OpenMP_omp_LIBRARY "/usr/local/opt/libomp/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
+    endif()
+endif()
+
+find_package(OpenMP)
+if (OPENMP_FOUND)
+    # set (CMAKE_CXX_FLAGS "-Ofast -std=c++17 -I/usr/include/jsoncpp ${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif()
+
+
 # OpenNI
 find_package(OpenNI)
 # Qhull
 find_package(Qhull)
 # Find ROS
 include(${PCL_SOURCE_DIR}/cmake/pcl_find_ros.cmake)
-# Find VTK 
-find_package(VTK)
-if(VTK_FOUND)
-	set(VTK_FOUND TRUE)
-  message(STATUS "VTK found (include: ${VTK_INCLUDE_DIRS}, lib: ${VTK_LIBRARY_DIRS})")
-  link_directories(${VTK_LIBRARY_DIRS})
-  set(HAVE_VTK ON)
-endif()
+
+# # Find VTK 
+# find_package(VTK)
+# if(VTK_FOUND)
+# 	set(VTK_FOUND TRUE)
+#   message(STATUS "VTK found (include: ${VTK_INCLUDE_DIRS}, lib: ${VTK_LIBRARY_DIRS})")
+#   link_directories(${VTK_LIBRARY_DIRS})
+#   set(HAVE_VTK ON)
+# endif()
+
 # Find wxWidgets
 find_package(wxWidgets)
 if(wxWidgets_FOUND)

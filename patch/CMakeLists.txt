@@ -11,6 +11,11 @@ string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
 
+# set(PCL_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+
+# OpenMP
+include(${PCL_SOURCE_DIR}/cmake/pcl_openmp.cmake)
+
 # ---[ Release/Debug specific flags
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
   add_definitions("-DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG")
@@ -110,9 +115,6 @@ include_directories(${FLANN_INCLUDE_DIRS})
 # CMinpack
 find_package(CMinpack REQUIRED)
 include_directories(${CMINPACK_INCLUDE_DIRS})
-
-# # OpenMP
-# include(${PCL_SOURCE_DIR}/cmake/pcl_openmp.cmake)
 
 # OPEN MP
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")

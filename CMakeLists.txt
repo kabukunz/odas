@@ -12,6 +12,11 @@ file(DOWNLOAD https://raw.githubusercontent.com/kabukunz/trapper/main/Trapper.cm
 
 include(Trapper)
 
+# original comp flags
+# set (CMAKE_CXX_FLAGS "-Ofast -std=c++17 -I/usr/include/jsoncpp ${CMAKE_CXX_FLAGS}")
+# new setup
+# set (CMAKE_CXX_FLAGS "-Ofast ${CMAKE_CXX_FLAGS}")
+
 # eigen
 find_package(Eigen3)
 
@@ -48,29 +53,36 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     endif()
 endif()
 
+# # include location
+# set(OpenMP_CXX_INCLUDE_DIR "/usr/local/opt/libomp/include")
+
 find_package(OpenMP)
-if (OPENMP_FOUND)
-    # set (CMAKE_CXX_FLAGS "-Ofast -std=c++17 -I/usr/include/jsoncpp ${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-endif()
+# if (OpenMP_CXX_FOUND)
+
+#     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+
+#     include_directories(${OpenMP_CXX_INCLUDE_DIRS})
+    
+# else()
+#     message(FATAL_ERROR "Could not find OpenMP")
+# endif()
 
 # PCL
-# find_package(PCL CONFIG 1.2 REQUIRED PATHS ${CMAKE_SOURCE_DIR}/../pcl/build/install/share/pcl-1.12)
 
 # https://github.com/PointCloudLibrary/pcl/releases/tag/pcl-1.2
 
-trapper_add_package(pcl
-    https://github.com/PointCloudLibrary/pcl.git
-    pcl-1.2
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/external"
-    VERBOSE
-    )
+# trapper_add_package(pcl
+#     https://github.com/PointCloudLibrary/pcl.git
+#     pcl-1.2
+#     SOURCE_DIR "${CMAKE_SOURCE_DIR}/external"
+#     VERBOSE
+#     )
 
-# patch pcl 1.2
-configure_file("${CMAKE_SOURCE_DIR}/patch/CMakeLists.txt" "${TRAPPER_SOURCE_DIR}/CMakeLists.txt" COPYONLY)  
+# NOTE: pcl 1.2 doesn't even build on mac os
+# configure_file("${CMAKE_SOURCE_DIR}/patch/CMakeLists.txt" "${TRAPPER_SOURCE_DIR}/CMakeLists.txt" COPYONLY)  
+# find_package(PCL CONFIG 1.2 REQUIRED PATHS "${TRAPPER_INSTALL_DIR}/share/pcl-1.2")
 
-find_package(PCL CONFIG 1.2 REQUIRED PATHS "${TRAPPER_INSTALL_DIR}/share/pcl-1.2")
-# add_subdirectory("${TRAPPER_SOURCE_DIR}")
+find_package(PCL CONFIG 1.2 REQUIRED PATHS ${CMAKE_SOURCE_DIR}/../pcl/build/install/share/pcl-1.12)
 
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
@@ -127,3 +139,4 @@ target_link_libraries (${PROJECT_NAME} ${CMAES_LIBRARIES})
 # target_link_libraries (${PROJECT_NAME} ${NSGA2})
 # target_link_libraries (${PROJECT_NAME} ${NEWUOA_LIBRARIES})
 
+target_link_libraries (${PROJECT_NAME} ${OpenMP_CXX_LIBRARIES})

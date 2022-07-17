@@ -34,13 +34,13 @@ int main()
             solver.validate_best_sol();
         }
         
-        {   // compound
-            SolverDirectMlsl solver;
-            solver.set_seed(seed);
-            solver.load_prob(probs.get_filename(pid));
-            solver.solve(1000);
-            solver.validate_best_sol();
-        }    
+        {   // default cmaes 
+            Solvercmaes solvercmaes;
+            solvercmaes.set_seed(seed);
+            solvercmaes.load_prob(probs.get_filename(pid));
+            solvercmaes.solve(0, 1000);
+            solvercmaes.validate_best_sol();
+        }
         /*
         std::cout << pid << ": ";
         {   // Voting

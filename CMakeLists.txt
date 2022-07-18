@@ -69,6 +69,15 @@ find_package(OpenMP)
 
 # PCL
 
+# In file included from /Users/max/Developer/Library/Graphics/odas/odas/solver.hpp:5:
+# /Users/max/Developer/Library/Graphics/odas/odas/simpcd.hpp:97:31: error: no member named 'leaf_begin' in
+#       'pcl::octree::OctreePointCloudPointVector<pcl::PointXYZ, pcl::octree::OctreeContainerPointIndices,
+#       pcl::octree::OctreeContainerEmpty, pcl::octree::OctreeBase<pcl::octree::OctreeContainerPointIndices,
+#       pcl::octree::OctreeContainerEmpty> >'
+#         for (auto it = octree.leaf_begin(); it != octree.leaf_end(); it++)
+ 
+# 546ffc007173052ce1a9aefc9b6aaf7929e3f73a questa commit sembra avere leaf_begin, leaf_end
+
 # https://github.com/PointCloudLibrary/pcl/releases/tag/pcl-1.2
 
 # trapper_add_package(pcl

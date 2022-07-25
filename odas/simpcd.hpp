@@ -92,6 +92,14 @@ private:
         octree.addPointsFromInputCloud();
         oct_voxel_cloud->clear();
         oct_voxel_cloud->reserve(octree.getLeafCount());
+
+        // OctreeT pcl::octree::OctreePointCloudPointVector<pcl::PointXYZ>
+
+        // leaf_begin(), leaf_end()
+        // that *doesnt* work
+
+        // now we have:
+        // leaf_breadth_begin(), leaf_breadth_end()
         
         Eigen::Vector3f min_pt, max_pt;
         for (auto it = octree.leaf_begin(); it != octree.leaf_end(); it++)

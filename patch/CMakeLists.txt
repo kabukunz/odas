@@ -1,15 +1,20 @@
+
 ### ---[ PCL global CMake
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+# cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.9)
+
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "possible configurations" FORCE)
 # In case the user does not setup CMAKE_BUILD_TYPE, assume it's RelWithDebInfo
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
   set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "build type default to RelWithDebInfo, set to Release to improve performance" FORCE)
 endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
 
-project(PCL)
+project(PCL C CXX)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
+
+set(CMAKE_CXX_STANDARD 17)
 
 # set(PCL_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 
@@ -116,25 +121,11 @@ include_directories(${FLANN_INCLUDE_DIRS})
 find_package(CMinpack REQUIRED)
 include_directories(${CMINPACK_INCLUDE_DIRS})
 
-# OPEN MP
-if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    message("-- Setting OpenMP flags on MacOs. Assuming `brew install libomp`")
-    if(CMAKE_C_COMPILER_ID MATCHES "Clang")
-        set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" CACHE INTERNAL "OpenMP flags for Xcode toolchain.")
-        set(OpenMP_C_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
-        set(OpenMP_omp_LIBRARY "/usr/local/opt/libomp/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
-    endif()
+set (CMAKE_CXX_FLAGS "-Ofast -I/usr/include/jsoncpp ${CMAKE_CXX_FLAGS}")
 
-    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" CACHE INTERNAL "OpenMP flags for Xcode toolchain.")
-        set(OpenMP_CXX_LIB_NAMES "omp" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
-        set(OpenMP_omp_LIBRARY "/usr/local/opt/libomp/lib/libomp.dylib" CACHE INTERNAL "OpenMP lib name for Xcode toolchain.")
-    endif()
-endif()
-
+# need update to cmake 3.9
 find_package(OpenMP)
-if (OPENMP_FOUND)
-    # set (CMAKE_CXX_FLAGS "-Ofast -std=c++17 -I/usr/include/jsoncpp ${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+if (OPENMP_CXX_FOUND)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
